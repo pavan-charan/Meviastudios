@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
 import { FloatingPathsBackground } from "@/components/ui/floating-paths";
 import {
   Megaphone,
@@ -67,6 +67,60 @@ function FeatureCard({ title, Icon }: { title: string, Icon: any }) {
 
 // --- Main Component ---
 
+function LetterSpan({ char, index, scrollYProgress }: { char: string, index: number, scrollYProgress: MotionValue<number> }) {
+  const focalPoint = index * 0.015;
+
+  const scale = useTransform(
+    scrollYProgress,
+    [focalPoint - 0.06, focalPoint, focalPoint + 0.06],
+    [1, 1.25, 1]
+  );
+  
+  const y = useTransform(
+    scrollYProgress,
+    [focalPoint - 0.06, focalPoint, focalPoint + 0.06],
+    [0, -15, 0]
+  );
+
+  const color = useTransform(
+    scrollYProgress,
+    [focalPoint - 0.04, focalPoint, focalPoint + 0.04],
+    ["rgba(255,255,255,0.05)", "rgba(255,255,255,1)", "rgba(255,255,255,0.05)"]
+  );
+
+  const WebkitTextStroke = useTransform(
+    scrollYProgress,
+    [focalPoint - 0.04, focalPoint, focalPoint + 0.04],
+    ["1px rgba(255,255,255,0.15)", "1px rgba(255,255,255,0)", "1px rgba(255,255,255,0.15)"]
+  );
+
+  const textShadow = useTransform(
+    scrollYProgress,
+    [focalPoint - 0.02, focalPoint, focalPoint + 0.02],
+    [
+      "0 0 0px rgba(124,92,255,0)",
+      "0 0 40px rgba(124,92,255,0.4)",
+      "0 0 0px rgba(124,92,255,0)"
+    ]
+  );
+
+  return (
+    <motion.span
+      style={{
+        display: "inline-block",
+        scale,
+        y,
+        color,
+        WebkitTextStroke,
+        textShadow,
+        whiteSpace: char === " " ? "pre" : "normal"
+      }}
+    >
+      {char}
+    </motion.span>
+  );
+}
+
 export function MeviaFeaturesFlow() {
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -106,52 +160,9 @@ export function MeviaFeaturesFlow() {
           className="absolute inset-0 flex items-center whitespace-nowrap z-0 px-[15vw]"
         >
           <h2 className="text-[12vw] font-bold uppercase flex items-center gap-[1.5vw] tracking-tighter">
-            {"Mevia Features".split("").map((char, i) => {
-              // Individual letter focal point logic
-              const focalPoint = i * 0.015;
-
-              return (
-                <motion.span
-                  key={i}
-                  style={{
-                    display: "inline-block",
-                    scale: useTransform(
-                      scrollYProgress,
-                      [focalPoint - 0.06, focalPoint, focalPoint + 0.06],
-                      [1, 1.25, 1]
-                    ),
-                    y: useTransform(
-                      scrollYProgress,
-                      [focalPoint - 0.06, focalPoint, focalPoint + 0.06],
-                      [0, -15, 0]
-                    ),
-                    // Elegant transition from ghost outline to solid bright white
-                    color: useTransform(
-                      scrollYProgress,
-                      [focalPoint - 0.04, focalPoint, focalPoint + 0.04],
-                      ["rgba(255,255,255,0.05)", "rgba(255,255,255,1)", "rgba(255,255,255,0.05)"]
-                    ),
-                    WebkitTextStroke: useTransform(
-                      scrollYProgress,
-                      [focalPoint - 0.04, focalPoint, focalPoint + 0.04],
-                      ["1px rgba(255,255,255,0.15)", "1px rgba(255,255,255,0)", "1px rgba(255,255,255,0.15)"]
-                    ),
-                    textShadow: useTransform(
-                      scrollYProgress,
-                      [focalPoint - 0.02, focalPoint, focalPoint + 0.02],
-                      [
-                        "0 0 0px rgba(124,92,255,0)",
-                        "0 0 40px rgba(124,92,255,0.4)",
-                        "0 0 0px rgba(124,92,255,0)"
-                      ]
-                    ),
-                    whiteSpace: char === " " ? "pre" : "normal"
-                  }}
-                >
-                  {char}
-                </motion.span>
-              );
-            })}
+            {"Mevia Features".split("").map((char, i) => (
+              <LetterSpan key={i} char={char} index={i} scrollYProgress={scrollYProgress} />
+            ))}
           </h2>
         </motion.div>
 

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef } from "react";
-import { motion, useScroll, useTransform, useMotionValue, useMotionTemplate } from "framer-motion";
+import { motion, useScroll, useTransform, useMotionValue, useMotionTemplate, MotionValue } from "framer-motion";
 import { Megaphone, Users2, CreditCard, BarChart3 } from "lucide-react";
 import { GlassCard } from "@/components/ui/GlassCard";
 
