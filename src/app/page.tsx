@@ -5,6 +5,7 @@ import { FeaturesToEcosystem } from "@/components/sections/FeaturesToEcosystem";
 import { MeviaFeaturesFlow } from "@/components/sections/MeviaFeaturesFlow";
 import { BulkImport } from "@/components/sections/BulkImport";
 import { Stats } from "@/components/sections/Stats";
+import { BlogSection } from "@/components/sections/BlogSection";
 import { CTA } from "@/components/sections/CTA";
 
 export default function Home() {
@@ -17,6 +18,7 @@ export default function Home() {
       <MeviaFeaturesFlow />
       <BulkImport />
       <Stats />
+      <BlogSection />
       <CTA />
     </main>
   );
